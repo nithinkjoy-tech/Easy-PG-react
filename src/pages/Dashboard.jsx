@@ -2,6 +2,8 @@ import React, {useEffect, useState, useMemo} from "react";
 import DataTable from "react-data-table-component";
 import _ from "lodash";
 import { getUsers } from './../api/user';
+import DropDownSelect from "../components/common/DropDownSelect";
+import CreateDebt from "./CreateDebt";
 
 //name   username  email  amount-to-get   amount-to-pay
 
@@ -13,6 +15,7 @@ function Dashboard() {
     }
 
     const [userData, setUserData] = useState();
+    const [addDebt,setAddDebt]=useState(false)
 //   const handleDelete = roomBoyId => {
 //     confirmAlert({
 //       title: "Delete Room Boy",
@@ -58,11 +61,11 @@ function Dashboard() {
       },
       {
         name: "AmountToCollect",
-        selector: row=>row["amounttoget"],
+        selector: row=>row["payableAmount"]||" - ",
       },
       {
         name: "Amount to pay",
-        selector: row=>row["payableAmount"],
+        selector: row=>row["amountsToCollect"]||" - ",
       },
       {
         name: "",
@@ -110,7 +113,7 @@ function Dashboard() {
 
   return (
     <div style={{margin:"auto",width:"50%"}} className="dashboard-items">
-      <div className="arrivallist" style={{margin: 0}}>
+      {!addDebt&&<div className="arrivallist" style={{margin: 0}}>
         <>
           <DataTable
             title="Users"
@@ -121,7 +124,15 @@ function Dashboard() {
             data={userData}
           />
         </>
-      </div>
+      </div>}
+      
+      {!addDebt&&
+      <>
+      <button onClick={()=>setAddDebt(true)} className="btn btn-primary">Add new Debt</button></>}
+      {addDebt&&<>
+        <button onClick={()=>{setAddDebt(false)}} className="btn btn-secondary">Back</button>
+        <CreateDebt/>
+      </> }
     </div>
   );
 }

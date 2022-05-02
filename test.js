@@ -1,19 +1,10 @@
-function rotate(matrix) {
-  let n = matrix[0].length;
-  for (let i = 0; i < n; i++) {
-    for (let j = 0; j < 2; j++) {
-      let temp = matrix[i][j];
-      matrix[i][j] = matrix[j][i];
-      matrix[j][i] = temp;
-    }
-  }
-  return matrix;
-}
+// let a=[[],[],[]]
 
-console.log(
-  rotate([
-    [5, 1, 6],
-    [4, 0, 2],
-    [7, 3, 8],
-  ])
-);
+// a[2][2]=10
+// console.log(a)
+let arr=[]
+  for(let j=0;j<2;j++){
+    arr.push([])
+  }
+
+console.log(arr)

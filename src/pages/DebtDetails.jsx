@@ -1,42 +1,111 @@
 import React, {useEffect, useState, useMemo} from "react";
 import DataTable from "react-data-table-component";
 import _ from "lodash";
-import {getDebtDetails} from "./../api/user";
+import {getDebtDetails, getMaxAmount, updateTransaction} from "./../api/user";
+import * as Yup from "yup";
+import {Formik, Form} from "formik";
+import {confirmAlert} from "react-confirm-alert";
+import 'react-confirm-alert/src/react-confirm-alert.css';
+import InputBox from "../components/common/InputBox";
 
 //name   amount-pending   amount-paid   total-amount    view-Transactions
+
 
 function DebtDetails() {
   const viewTransactions = id => {
     window.location = `/dashboard/details/transactions/${id}`;
   };
 
+  const handleSubmit = async (values, setFieldError) => {
+    let newValues={}
+    newValues["userId"]=row.debtorId
+    newValues["amountPaid"]=Number(values["amountPaid"])
+    newValues["transactionId"]=row._id
+    updatePayment(newValues)
+  };
+    const updatePayment = values => {
+    confirmAlert({
+      title: "Confirm Payment",
+      message: "Are you sure want to update payment",
+      buttons: [
+        {
+          label: "Yes",
+          onClick: async () => {
+            const {data, status} = await updateTransaction(values);
+            console.log(data);
+            //if (status !== 200) return displayNotification("error", data);
+            window.location=window.location.pathname
+            // setRoomBoys(data);
+            // displayNotification("info", "Successfully deleted room boy.");
+          },
+        },
+        {
+          label: "No",
+          onClick: () => {
+            return null;
+          },
+        },
+      ],
+    });
+  };
+
+  const [maxAmount, setMaxAmount] = useState();
+  const [row, setRow] = useState();
+
+  const validationSchema = Yup.object().shape({
+    amountPaid: Yup.number().min(1).max(maxAmount).label("Amount"),
+    debtName: Yup.string().min(1).max(50).label("Debt Name"),
+  });
+
+  const makePayment = async row => {
+    console.log(row,"rw");
+    setRow(row)
+    const {data, status} = await getMaxAmount(row._id);
+    setMaxAmount(data.maxAmount);
+  };
+
   const [userData, setUserData] = useState();
 
-  const columns = useMemo( 
+  const columns = useMemo(
     () => [
       {
         name: "Name",
-        selector: row => row["name"],
+        selector: row => row["debtName"],
         sortable: true,
       },
       {
         name: "Amount Pending",
-        selector: row => "Rs. "+ Number(row["amount"]-row["paid"]),
+        selector: row => <span style={{color:"black"}}>{"Rs. " + Number(row["amount"] - row["paid"])}</span>,
       },
       {
         name: "Amount Paid",
-        selector: row =>"Rs. "+ row["paid"],
+        selector: row => "Rs. " + row["paid"],
       },
       {
         name: "Total Amount",
-        selector: row => "Rs. "+ row["amount"],
+        selector: row => "Rs. " + row["amount"],
+      },
+      {
+        name: "Status",
+        selector: row => row["status"],
       },
       {
         name: "",
         cell: row => (
           <td data-label="Delete">
             <button onClick={() => viewTransactions(row._id)} className="btn btn-secondary">
-              View Transactions
+              Payment Details
+            </button>
+          </td>
+        ),
+        grow: 1,
+      },
+      {
+        name: "",
+        cell: row => (
+          row["status"]=="completed"||<td data-label="Delete">
+            <button onClick={() => makePayment(row)} className="btn btn-success">
+              Make Payment
             </button>
           </td>
         ),
@@ -53,7 +122,7 @@ function DebtDetails() {
   //   };
 
   const getDetails = async () => {
-      console.log(window.location,"lc");
+    console.log(window.location, "lc");
     const {data, status} = await getDebtDetails(window.location.pathname.substring(19));
     console.log(data);
     setUserData(data);
@@ -77,20 +146,63 @@ function DebtDetails() {
   }, []);
 
   return (
-    <div style={{margin: "auto", width: "50%"}} className="dashboard-items">
-      <div className="arrivallist" style={{margin: 0}}>
-        <>
-          <DataTable
-            title="Users"
-            pagination
-            subHeader
-            noDataComponent="No users in the list"
-            columns={columns}
-            data={userData}
-          />
-        </>
-      </div>
-    </div>
+    <>
+      {!maxAmount&&<div style={{margin: "auto", width: "90%"}} className="">
+        <div className="" style={{margin: 0}}>
+          <>
+            <DataTable
+              title="Repayment Details"
+              pagination
+              subHeader
+              noDataComponent="No payment details available"
+              columns={columns}
+              data={userData}
+            />
+          </>
+        </div>
+      </div>}
+
+      {maxAmount&&
+      <>
+      <button style={{marginLeft:"50px",marginTop:"20px"}} onClick={()=>{setMaxAmount(0)}} className="btn btn-secondary">Back</button>
+
+      <Formik
+        initialValues={{
+          amountPaid:"",
+          row:"",
+          debtName:""
+        }}
+        validationSchema={validationSchema}
+        onSubmit={(values, {setFieldError}) => handleSubmit(values, setFieldError)}
+      >
+        {({errors, touched, values, handleChange, handleBlur, setFieldValue}) => (
+          <Form>
+            <h3 style={{textAlign: "center"}}>Pay Amount</h3>
+            <div style={{margin: "auto", width: "50%"}}>
+              <div className="form-group">
+                <InputBox
+                  error={errors}
+                  handleBlur={handleBlur}
+                  touched={touched}
+                  label="Amount"
+                  values={values}
+                  type="text"
+                  name="amountPaid"
+                  placeholder={`Amount to pay is ${maxAmount}`}
+                  handleChange={handleChange}
+                  className="form-control"
+                />
+              </div>
+              <button type="submit" style={{marginTop:'20px'}} className="btn btn-primary btn-block">
+                Make Payment
+              </button>
+            </div>
+          </Form>
+        )}
+      </Formik>
+      </>
+      }
+    </>
   );
 }
 

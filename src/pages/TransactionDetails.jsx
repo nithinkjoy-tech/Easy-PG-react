@@ -16,11 +16,6 @@ function TransactionDetails() {
   const columns = useMemo( 
     () => [
       {
-        name: "Name",
-        selector: row => row["name"],
-        sortable: true,
-      },
-      {
         name: "Amount Paid",
         selector: row =>"Rs. "+ row["amountPaid"],
       },
@@ -78,10 +73,11 @@ function TransactionDetails() {
       <div className="arrivallist" style={{margin: 0}}>
         <>
           <DataTable
-            title="Users"
+            title="Transactions"
             pagination
             subHeader
-            noDataComponent="No users in the list"
+            //subHeaderComponent={`Transaction details of item ${}`}
+            noDataComponent="No transaction details available"
             columns={columns}
             data={userData}
           />
