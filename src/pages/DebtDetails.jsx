@@ -7,7 +7,7 @@ import {Formik, Form} from "formik";
 import {confirmAlert} from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
 import InputBox from "../components/common/InputBox";
-
+import { displayNotification } from './../services/notificationService';
 //name   amount-pending   amount-paid   total-amount    view-Transactions
 
 function DebtDetails() {
@@ -32,7 +32,8 @@ function DebtDetails() {
           onClick: async () => {
             const {data, status} = await updateTransaction(values);
             console.log(data);
-            //if (status !== 200) return displayNotification("error", data);
+            if (status !== 200) return displayNotification("error", "Something went wrong");
+            displayNotification("success","Successfully updated");
             window.location = window.location.pathname;
             // setRoomBoys(data);
             // displayNotification("info", "Successfully deleted room boy.");

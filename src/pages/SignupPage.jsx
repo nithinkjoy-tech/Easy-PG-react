@@ -6,6 +6,7 @@ import Error from "./../components/forms/Error";
 import {ErrorMessage} from "formik";
 import { setAuthToken } from "../services/authService";
 import { addUser } from './../api/admin';
+import { displayNotification } from './../services/notificationService';
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().min(2).max(50).required("Name is required").label("Name"),
@@ -18,7 +19,7 @@ const validationSchema = Yup.object().shape({
   confirmPassword: Yup.string().oneOf([Yup.ref("password"), null], "Passwords must match"),
 });
 
-function SigninPage({location}) {
+function SignupPage({location}) {
   const [passwordType, setPasswordType] = useState("password");
 
   const handleSubmit = async (values, setFieldError) => {
@@ -27,7 +28,7 @@ function SigninPage({location}) {
         const {data, status} = await addUser(values);
         if (status !== 200) setFieldError("userId", data);
         else {
-          displayNo
+          displayNotification("success","User successfully added")
         }
     }
 
@@ -137,4 +138,4 @@ function SigninPage({location}) {
   );
 }
 
-export default SigninPage;
+export default SignupPage;

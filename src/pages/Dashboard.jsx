@@ -7,12 +7,12 @@ import CreateDebt from "./CreateDebt";
 import {logout} from "../services/authService"
 //name   username  email  amount-to-get   amount-to-pay
 
-
 function Dashboard() {
 
     const viewDetails=(id)=>{
       window.location=`/dashboard/details/${id}`
     }
+
 
     const [userData, setUserData] = useState();
     const [addDebt,setAddDebt]=useState(false)

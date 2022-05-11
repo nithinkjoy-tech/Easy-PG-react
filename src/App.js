@@ -1,4 +1,5 @@
 import {Switch,Route} from  "react-router-dom"
+import {ToastContainer} from "react-toastify";
 import "./App.css";
 import AdminRoute from './components/common/AdminRoute';
 import SigninPage from "./pages/SigninPage";
@@ -11,6 +12,19 @@ import UserRoute from './components/common/UserRoute';
 
 function App() {
   return (
+    <>
+    <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme={"colored"}
+      />
     <Switch>
       <AdminRoute exact path="/admin/adduser" component={SignupPage} />
       <Route exact path="/admin/signin" component={SigninPage} />
@@ -19,6 +33,7 @@ function App() {
       <UserRoute exact path="/dashboard/details/:id" component={DebtDetails} />
       <UserRoute exact path="/" component={Dashboard} />
     </Switch>
+    </>
   );
 }
 

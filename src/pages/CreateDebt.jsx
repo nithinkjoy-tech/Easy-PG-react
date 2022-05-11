@@ -6,6 +6,7 @@ import {createDebt, getUsers} from "./../api/user";
 import InputBox from "./../components/common/InputBox";
 import DropDownSelect from "./../components/common/DropDownSelect";
 import _ from "lodash";
+import { displayNotification } from "../services/notificationService";
 
 export default function CreateDebt() {
   const [options, setOptions] = useState([]);
@@ -26,7 +27,12 @@ export default function CreateDebt() {
     }
 
     const {data, status} = await createDebt(values);
-    if (status == 200) window.location = "/dashboard";
+    if (status == 200){
+      displayNotification("success","Debt added to database")
+      setTimeout(()=>{
+        window.location = "/";
+      },1000)
+    }
   };
 
   const getAllUsers = async () => {
