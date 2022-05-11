@@ -1,5 +1,5 @@
 import React, {useEffect, useState, useMemo} from "react";
-import {useNavigate} from "react-router-dom"
+import {useHistory} from "react-router-dom"
 import DataTable from "react-data-table-component";
 import _ from "lodash";
 import {getTransactionDetails} from "./../api/user";
@@ -11,7 +11,7 @@ function TransactionDetails() {
   //     window.location = `/dashboard/details/transactions/${id}`;
   //   };
   const [userData, setUserData] = useState();
-  const navigate = useNavigate();
+  const history = useHistory();
 
   const findPath=()=>{
     console.log(window.location,"i")
@@ -74,7 +74,7 @@ function TransactionDetails() {
 
   return (
     <div style={{margin: "auto", width: "50%"}} className="dashboard-items">
-      <button onClick={() => navigate(-1)} className="btn btn-secondary">
+      <button onClick={() => history.goBack()} className="btn btn-secondary">
         Back
       </button>
       <div className="arrivallist" style={{margin: 0}}>

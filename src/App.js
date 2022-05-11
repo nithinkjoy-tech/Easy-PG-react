@@ -1,21 +1,24 @@
-import {Routes,Route} from  "react-router-dom"
+import {Switch,Route} from  "react-router-dom"
 import "./App.css";
+import AdminRoute from './components/common/AdminRoute';
 import SigninPage from "./pages/SigninPage";
 import SignupPage from "./pages/SignupPage";
 import Dashboard from "./pages/Dashboard";
 import DebtDetails from "./pages/DebtDetails";
 import TransactionDetails from './pages/TransactionDetails';
 import DropDownSelect from './components/common/DropDownSelect';
+import UserRoute from './components/common/UserRoute';
 
 function App() {
   return (
-    <Routes>
-      <Route exact path="/admin/adduser" element={<SignupPage/>} />
-      <Route exact path="/signin" element={<SigninPage/>} />
-      <Route exact path="/dashboard/details/transactions/:id" element={<TransactionDetails/>} />
-      <Route exact path="/dashboard/details/:id" element={<DebtDetails/>} />
-      <Route exact path="/dashboard" element={<Dashboard/>} />
-    </Routes>
+    <Switch>
+      <AdminRoute exact path="/admin/adduser" component={SignupPage} />
+      <Route exact path="/admin/signin" component={SigninPage} />
+      <Route exact path="/signin" component={SigninPage} />
+      <UserRoute exact path="/dashboard/details/transactions/:id" component={TransactionDetails} />
+      <UserRoute exact path="/dashboard/details/:id" component={DebtDetails} />
+      <UserRoute exact path="/" component={Dashboard} />
+    </Switch>
   );
 }
 

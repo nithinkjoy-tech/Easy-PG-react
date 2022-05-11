@@ -27,8 +27,7 @@ function SigninPage({location}) {
         const {data, status} = await addUser(values);
         if (status !== 200) setFieldError("userId", data);
         else {
-          setAuthToken(data);
-          window.location = "/dashboard";
+          displayNo
         }
     }
 
@@ -56,7 +55,7 @@ function SigninPage({location}) {
     >
       {({errors, touched, values, handleChange, handleBlur}) => (
         <Form>
-          <h3 style={{textAlign: "center"}}>Sign Up</h3>
+          <h3 style={{textAlign: "center"}}>Add User</h3>
           <div style={{margin: "auto", width: "50%"}}>
             <div className="form-group">
               <InputBox
@@ -129,11 +128,8 @@ function SigninPage({location}) {
               />
             </div>
             <button type="submit" className="btn btn-primary btn-block">
-              Sign Up
+              Add User
             </button>
-            <p className="forgot-password text-right">
-              Already registered <a href="#">sign in?</a>
-            </p>
           </div>
         </Form>
       )}

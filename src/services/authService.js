@@ -1,7 +1,7 @@
 import jwtDecode from "jwt-decode";
 const tokenKey="token"
 
-function logout(){
+export const logout=()=>{
     localStorage.removeItem(tokenKey)
 }
 

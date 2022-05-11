@@ -4,7 +4,7 @@ import _ from "lodash";
 import { getUsers } from './../api/user';
 import DropDownSelect from "../components/common/DropDownSelect";
 import CreateDebt from "./CreateDebt";
-
+import {logout} from "../services/authService"
 //name   username  email  amount-to-get   amount-to-pay
 
 
@@ -16,6 +16,11 @@ function Dashboard() {
 
     const [userData, setUserData] = useState();
     const [addDebt,setAddDebt]=useState(false)
+
+    const userLogout=()=>{
+      logout()
+      window.location="/signin"
+    }
 //   const handleDelete = roomBoyId => {
 //     confirmAlert({
 //       title: "Delete Room Boy",
@@ -113,6 +118,7 @@ function Dashboard() {
 
   return (
     <div style={{margin:"auto",width:"50%"}} className="dashboard-items">
+      <button style={{marginTop:"40px"}} onClick={()=>userLogout()} className="btn btn-danger">Logout</button>
       {!addDebt&&<div className="arrivallist" style={{margin: 0}}>
         <>
           <DataTable

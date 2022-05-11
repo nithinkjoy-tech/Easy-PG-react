@@ -4,6 +4,6 @@ export function addUser(values){
     return apiClient.post("/admin/adduser",values);
 }
 
-export function userSignin(values){
-    return apiClient.post("/user/profile",values);
+export function adminSignin(values){
+    return apiClient.post("/admin/signin",values);
 }

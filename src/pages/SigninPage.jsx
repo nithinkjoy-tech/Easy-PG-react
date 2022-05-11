@@ -4,32 +4,32 @@ import * as Yup from "yup";
 import {Formik, Form} from "formik";
 import {setAuthToken} from "../services/authService"
 import { userSignin } from "../api/user";
+import { adminSignin } from "../api/admin";
 
 const validationSchema = Yup.object().shape({
     userId: Yup.string().required("Email or Username is required").label("Email or Username"),
     password: Yup.string().required("Password is required").label("Password"),
   });
 
-function SigninPage({location}) {
+function SigninPage() {
 
   const handleSubmit = async (values, setFieldError) => {
-    console.log(values, "vl");
     if (window.location.pathname === "/signin") {
         const {data, status} = await userSignin(values);
         if (status !== 200) setFieldError("userId", data);
         else {
           setAuthToken(data);
-          window.location = "/dashboard";
+          window.location = "/";
         }
     }
 
     if (window.location.pathname === "/admin/signin") {
-      //   const {data, status} = await adminSignin(values);
-      //   if (status === 400) setFieldError("userId", data);
-      //   else {
-      //     setAuthToken(data);
-      //     window.location = "/admin/dashboard";
-      //   }
+        const {data, status} = await adminSignin(values);
+        if (status === 400) setFieldError("userId", data);
+        else {
+          setAuthToken(data);
+          window.location = "/admin/adduser";
+        }
     }
   };
 
@@ -44,7 +44,7 @@ function SigninPage({location}) {
     >
       {({errors, touched, values, handleChange, handleBlur}) => (
         <Form>
-          <h3 style={{textAlign: "center"}}>Sign In</h3>
+          <h3 style={{textAlign: "center"}}>{window.location.pathname=="/admin/signin"?"Admin Sign In":"Sign In"}</h3>
           <div style={{margin: "auto", width: "50%"}}>
             <div className="form-group">
               <InputBox

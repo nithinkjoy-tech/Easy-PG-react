@@ -152,7 +152,7 @@ function DebtDetails() {
       {!maxAmount && (
         <button
           style={{marginTop: "30px", marginLeft: "90px"}}
-          onClick={() => (window.location = "/dashboard")}
+          onClick={() => (window.location = "/")}
           className="btn btn-secondary"
         >
           Back
