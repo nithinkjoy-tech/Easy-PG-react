@@ -29,6 +29,7 @@ function SignupPage({location}) {
         if (status !== 200) setFieldError("userId", data);
         else {
           displayNotification("success","User successfully added")
+          window.location ="/admin/adduser"
         }
     }
 

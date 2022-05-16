@@ -6,6 +6,7 @@ import DropDownSelect from "../components/common/DropDownSelect";
 import CreateDebt from "./CreateDebt";
 import {logout} from "../services/authService"
 //name   username  email  amount-to-get   amount-to-pay
+import auth from "../services/authService"
 
 function Dashboard() {
 
@@ -118,7 +119,7 @@ function Dashboard() {
 
   return (
     <div style={{margin:"auto",width:"50%"}} className="dashboard-items">
-      <button style={{marginTop:"40px"}} onClick={()=>userLogout()} className="btn btn-danger">Logout</button>
+      {auth.getCurrentUser()?<button style={{marginTop:"40px"}} onClick={()=>userLogout()} className="btn btn-danger">Logout</button>:""}
       {!addDebt&&<div className="arrivallist" style={{margin: 0}}>
         <>
           <DataTable
