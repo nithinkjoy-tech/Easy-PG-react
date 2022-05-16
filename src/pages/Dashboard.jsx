@@ -100,7 +100,7 @@ function Dashboard() {
         data.forEach((element)=>{
           if(element?.payableAmount){
             for (const [key, value] of Object.entries(element.payableAmount)) {
-              element.payableAmount+=element.payableAmount
+              element.payableAmount+=value
           } 
           }
         })
