@@ -7,7 +7,7 @@ const settings = {
       apiUrl: "http://localhost:3900/api",
     },
     prod: {
-      apiUrl: "https://hotelbook-api.herokuapp.com/api",
+      apiUrl: "https://easypg-api.herokuapp.com/api",
     },
   };
   
