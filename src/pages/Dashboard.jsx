@@ -60,11 +60,11 @@ function Dashboard() {
         selector: row=>row["username"],
         grow:0
       },
-      {
-        name: "Email",
-        selector: row=>row["email"],
-        grow:0
-      },
+      // {
+      //   name: "Email",
+      //   selector: row=>row["email"],
+      //   grow:0
+      // },
       {
         name: "AmountToCollect",
         selector: row=>row["payableAmount"]||" - ",
