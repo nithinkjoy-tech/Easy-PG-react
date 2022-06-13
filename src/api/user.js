@@ -11,6 +11,11 @@ export function userSignin(values){
 export function getDebtDetails(id){
     return apiClient.get(`/user/createDebt/${id}`);
 }
+
+export function debtDetails(id){
+    return apiClient.get(`/user/debtdetails/${id}`);
+}
+
 export function createDebt(values){
     return apiClient.post(`/user/createDebt`,values);
 }
