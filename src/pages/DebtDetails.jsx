@@ -35,8 +35,6 @@ function DebtDetails() {
             if (status !== 200) return displayNotification("error", "Something went wrong");
             displayNotification("success","Successfully updated");
             window.location = window.location.pathname;
-            // setRoomBoys(data);
-            // displayNotification("info", "Successfully deleted room boy.");
           },
         },
         {
