@@ -125,6 +125,7 @@ function DebtDetails() {
   const getDetails = async () => {
     console.log(window.location, "lc");
     const {data, status} = await getDebtDetails(window.location.pathname.substring(19));
+    _.reverse(data)
     console.log(data);
     setUserData(data);
   };
