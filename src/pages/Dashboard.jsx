@@ -96,14 +96,14 @@ function Dashboard() {
 
     const getAllUsers=async()=>{
         const {data,status}=await getUsers()
-        console.log(data);
-        data.forEach((element)=>{
-          if(element?.payableAmount){
-            for (const [key, value] of Object.entries(element.payableAmount)) {
-              element.payableAmount+=value
-          } 
-          }
-        })
+        // data.forEach((element)=>{
+        //   if(element?.payableAmount){
+        //     for (const [key, value] of Object.entries(element.payableAmount)) {
+        //       element.payableAmount+=value
+        //     } 
+        //   }
+        // })
+        console.log(data,"dt");
         setUserData(data)
     }
 
@@ -125,7 +125,7 @@ function Dashboard() {
   }, []);
 
   return (
-    <div style={{margin:"auto",width:"50%"}} className="dashboard-items">
+    <div style={{margin:"auto",width:"90%"}} className="dashboard-items">
       {auth.getCurrentUser()?<button style={{marginTop:"40px"}} onClick={()=>userLogout()} className="btn btn-danger">Logout</button>:""}
       {!addDebt&&<div className="arrivallist" style={{margin: 0}}>
         <>
