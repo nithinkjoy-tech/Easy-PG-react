@@ -8,14 +8,17 @@ import {confirmAlert} from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
 import InputBox from "../components/common/InputBox";
 import {displayNotification} from "./../services/notificationService";
+import Loader from './../components/common/Loader';
 //name   amount-pending   amount-paid   total-amount    view-Transactions
 
 function EachDebtDetails() {
+  const [isLoading, setIsLoading] = useState(true);
 
   const getDebtDetails = async () => {
     const {data, status} = await debtDetails(window.location.pathname.substring(23));
     console.log(data, "dt");
     setUserData(data);
+    setIsLoading(false)
   };
 
   const [userData, setUserData] = useState();
@@ -76,6 +79,8 @@ function EachDebtDetails() {
     // getAllRoomBoys();
     getDebtDetails();
   }, []);
+
+  if (isLoading) return <Loader />;
 
   return (
     <>

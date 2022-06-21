@@ -5,6 +5,7 @@ import {Formik, Form} from "formik";
 import {setAuthToken} from "../services/authService"
 import { userSignin } from "../api/user";
 import { adminSignin } from "../api/admin";
+import { displayNotification } from './../services/notificationService';
 
 const validationSchema = Yup.object().shape({
     userId: Yup.string().required("Email or Username is required").label("Email or Username"),
@@ -16,7 +17,8 @@ function SigninPage() {
   const handleSubmit = async (values, setFieldError) => {
     if (window.location.pathname === "/signin") {
         const {data, status} = await userSignin(values);
-        if (status !== 200) setFieldError("userId", data);
+        if (status === 400) setFieldError("userId", data);
+        else if(status!==200) return displayNotification("error","Check your connection!")
         else {
           setAuthToken(data);
           window.location = "/";
@@ -26,10 +28,12 @@ function SigninPage() {
     if (window.location.pathname === "/admin/signin") {
         const {data, status} = await adminSignin(values);
         if (status === 400) setFieldError("userId", data);
+        else if(status!==200) return displayNotification("error","Check your connection!")
         else {
           setAuthToken(data);
           window.location = "/admin/adduser";
         }
+
     }
   };
 

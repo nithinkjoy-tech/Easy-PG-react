@@ -26,7 +26,8 @@ function SignupPage({location}) {
     console.log(values, "vl");
     if (window.location.pathname === "/admin/adduser") {
         const {data, status} = await addUser(values);
-        if (status !== 200) setFieldError("userId", data);
+        if (status ===400) setFieldError("userId", data);
+        else if(status!==200) return displayNotification("error","Check your connection!")
         else {
           displayNotification("success","User successfully added")
           window.location ="/admin/adduser"

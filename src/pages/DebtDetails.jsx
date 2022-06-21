@@ -8,7 +8,9 @@ import {confirmAlert} from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
 import InputBox from "../components/common/InputBox";
 import { displayNotification } from './../services/notificationService';
+import Loader from './../components/common/Loader';
 //name   amount-pending   amount-paid   total-amount    view-Transactions
+
 
 function DebtDetails() {
   const viewTransactions = id => {
@@ -49,6 +51,7 @@ function DebtDetails() {
 
   const [maxAmount, setMaxAmount] = useState();
   const [row, setRow] = useState();
+  const [isLoading, setIsLoading] = useState(true)
 
   const validationSchema = Yup.object().shape({
     amountPaid: Yup.number().min(1).max(maxAmount).label("Amount"),
@@ -128,6 +131,7 @@ function DebtDetails() {
     _.reverse(data)
     console.log(data);
     setUserData(data);
+    setIsLoading(false)
   };
 
   //   const getAllRoomBoys = async () => {
@@ -146,6 +150,8 @@ function DebtDetails() {
     // getAllRoomBoys();
     getDetails();
   }, []);
+
+  if (isLoading) return <Loader />;
 
   return (
     <>

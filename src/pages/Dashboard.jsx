@@ -7,6 +7,8 @@ import CreateDebt from "./CreateDebt";
 import {logout} from "../services/authService";
 //name   username  email  amount-to-get   amount-to-pay
 import auth from "../services/authService";
+import { displayNotification } from './../services/notificationService';
+import Loader from './../components/common/Loader';
 
 function Dashboard() {
   const viewDetails = id => {
@@ -15,6 +17,7 @@ function Dashboard() {
 
   const [userData, setUserData] = useState();
   const [addDebt, setAddDebt] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const userLogout = () => {
     logout();
@@ -104,7 +107,8 @@ function Dashboard() {
 
   const getAllUsers = async () => {
     const {data, status} = await getUsers();
-    console.log(data, "dt");
+    if(status!==200) return displayNotification("error","Something went wrong, Check you connection!")
+    setIsLoading(false)
     setUserData(data);
   };
 
@@ -126,6 +130,8 @@ function Dashboard() {
     // getAllRoomBoys();
     getAllUsers();
   }, []);
+
+  if (isLoading) return <Loader />;
 
   return (
     <div style={{margin: "auto", width: "90%"}} className="dashboard-items">

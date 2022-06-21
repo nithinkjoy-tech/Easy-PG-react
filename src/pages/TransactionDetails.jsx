@@ -3,7 +3,7 @@ import {useHistory} from "react-router-dom"
 import DataTable from "react-data-table-component";
 import _ from "lodash";
 import {getTransactionDetails} from "./../api/user";
-
+import Loader from './../components/common/Loader';
 //name   amount-paid   payment-date
 
 function TransactionDetails() {
@@ -11,6 +11,7 @@ function TransactionDetails() {
   //     window.location = `/dashboard/details/transactions/${id}`;
   //   };
   const [userData, setUserData] = useState();
+  const [isLoading, setIsLoading] = useState(true);
   const history = useHistory();
 
   const findPath=()=>{
@@ -53,6 +54,7 @@ function TransactionDetails() {
     const {data, status} = await getTransactionDetails(window.location.pathname.substring(32));
     console.log(data);
     setUserData(data);
+    setIsLoading(false)
   };
 
   //   const getAllRoomBoys = async () => {
@@ -71,6 +73,8 @@ function TransactionDetails() {
     // getAllRoomBoys();
     getTransactions();
   }, []);
+
+  if (isLoading) return <Loader />;
 
   return (
     <div style={{margin: "auto", width: "50%"}} className="dashboard-items">
