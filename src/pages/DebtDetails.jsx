@@ -54,7 +54,7 @@ function DebtDetails() {
   const [isLoading, setIsLoading] = useState(true)
 
   const validationSchema = Yup.object().shape({
-    amountPaid: Yup.number().min(1).max(maxAmount).label("Amount"),
+    amountPaid: Yup.number().positive().integer().min(1).max(maxAmount).label("Amount"),
     debtName: Yup.string().min(1).max(50).label("Debt Name"),
   });
 

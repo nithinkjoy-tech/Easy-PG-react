@@ -12,8 +12,8 @@ export default function CreateDebt() {
   const [options, setOptions] = useState([]);
 
   const validationSchema = Yup.object().shape({
-    debtors: Yup.array().required("Debtors is required").label("Debtots"),
-    amount: Yup.number().required(),
+    debtors: Yup.array().required("Debtors is required").label("Debtors"),
+    amount: Yup.number().positive().integer().required(),
   });
 
   const handleSubmit = async (values, setFieldError) => {
