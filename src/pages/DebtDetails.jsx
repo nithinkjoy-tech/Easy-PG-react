@@ -17,6 +17,8 @@ function DebtDetails() {
     window.location = `/dashboard/details/transactions/${id}`;
   };
 
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+
   const handleSubmit = async (values, setFieldError) => {
     let newValues = {};
     newValues["userId"] = row.debtorId;
@@ -32,6 +34,7 @@ function DebtDetails() {
         {
           label: "Yes",
           onClick: async () => {
+            setIsButtonDisabled(true)
             const {data, status} = await updateTransaction(values);
             console.log(data);
             if (status !== 200) return displayNotification("error", "Something went wrong");
@@ -224,6 +227,7 @@ function DebtDetails() {
                     type="submit"
                     style={{marginTop: "20px"}}
                     className="btn btn-primary btn-block"
+                    disabled={isButtonDisabled}
                   >
                     Make Payment
                   </button>

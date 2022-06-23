@@ -10,13 +10,14 @@ import { displayNotification } from "../services/notificationService";
 
 export default function CreateDebt() {
   const [options, setOptions] = useState([]);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
   const validationSchema = Yup.object().shape({
     debtors: Yup.array().required("Debtors is required").label("Debtors"),
-    amount: Yup.number().positive().integer().required(),
+    amount: Yup.number().positive().integer().max(100000).required(),
   });
 
-  const handleSubmit = async (values, setFieldError) => {
+  const handleSubmit = async (values, setFieldError,resetForm) => {
     values["debtors"] = values.debtors[0].split(",");
     if (!values.debtors[0]) setFieldError("debtors", "Minimum one debtors should be there.");
     if (_.indexOf(values.debtors, "true") >= 0) {
@@ -25,6 +26,9 @@ export default function CreateDebt() {
     } else {
       values["includingMe"] = false;
     }
+
+    setIsButtonDisabled(true)
+    displayNotification("info","Updating Debt!")
 
     const {data, status} = await createDebt(values);
     if (status == 200){
@@ -61,7 +65,7 @@ export default function CreateDebt() {
         amount: "",
       }}
       validationSchema={validationSchema}
-      onSubmit={(values, {setFieldError}) => handleSubmit(values, setFieldError)}
+      onSubmit={(values, {setFieldError,resetForm}) => handleSubmit(values, setFieldError)}
     >
       {({errors, touched, values, handleChange, handleBlur, setFieldValue}) => (
         <Form>
@@ -110,7 +114,7 @@ export default function CreateDebt() {
                 className="form-control"
               />
             </div>
-            <button type="submit" className="btn btn-primary btn-block">
+            <button disabled={isButtonDisabled} type="submit" className="btn btn-primary btn-block">
               Add Debt
             </button>
           </div>
